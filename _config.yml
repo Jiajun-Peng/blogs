@@ -3,8 +3,8 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
-subtitle: ''
+title: nobug.world
+subtitle: 'Peng Jiajun的个人记录'
 description: ''
 keywords:
 author: Peng Jiajun
@@ -13,7 +13,7 @@ timezone: ''
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: http://example.com
+url: https://nobug.world
 permalink: blogs/:abbrlink/
 permalink_defaults:
 pretty_urls:
@@ -105,3 +105,13 @@ deploy:
   type: git
   repository: https://github.com/Jiajun-Peng/Jiajun-Peng.github.io.git
   branch: master
+  
+symbols_count_time:
+  symbols: true
+  time: true
+  total_symbols: true
+  total_time: true
+  exclude_codeblock: false
+  awl: 2
+  wpm: 275
+  suffix: "mins."

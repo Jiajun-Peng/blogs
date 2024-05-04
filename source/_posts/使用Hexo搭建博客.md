@@ -2,7 +2,10 @@
 title: 使用Hexo搭建博客
 abbrlink: 7043
 date: 2024-05-01 16:03:01
-tags:
+categories:
+- Hexo
+tags: 
+- Hexo
 ---
 
 # 前置准备
@@ -164,7 +167,7 @@ Done in 9.77s.
 
 文章的默认访问路径是日期+文章名：`/2024/02/12/测试/`
 
-修改为类似：`blogs/1234`
+修改为类似根据文章id的形式访问：`blogs/1234`
 
 **实现方式**
 
@@ -578,4 +581,123 @@ toc:
   # Maximum heading depth of generated toc.
   max_depth: 6
 ```
+
+# 文章字数统计
+
+使用[hexo-word-counter](https://github.com/next-theme/hexo-word-counter)统计文章的字数以及预期阅读时间。完成配置后，可以在每篇文章开头和页面底部显示字数和阅读时间
+
+```sh
+npm install hexo-word-counter
+```
+
+Hexo的_config.yml文件中添加选项：
+
+```yml
+symbols_count_time:
+  symbols: true
+  time: true
+  total_symbols: true
+  total_time: true
+  exclude_codeblock: false
+  awl: 4
+  wpm: 275
+  suffix: "mins."
+```
+
+NexT主题的_config.yml文件中修改选项：
+
+```yml
+# Post wordcount display settings
+# Dependencies: https://github.com/next-theme/hexo-word-counter
+symbols_count_time:
+  separated_meta: true
+  item_text_total: true
+```
+
+- awl– 平均字节长度（Average Word Length）。默认为 4
+  - `CN ≈ 2`
+  - `EN ≈ 5`
+  - `RU ≈ 6`
+- wpm – 每分钟阅读字数（Words Per Minute）。默认为275
+  - `Slow ≈ 200`
+  - `Normal ≈ 275`
+  - `Fast ≈ 350`
+
+*如果文章中大多中文，那么设置`awl`为`2`，`wpm`为`300`比较合适*
+
+# 设文章标签和分类
+
+Hexo Next 主题默认带有不少菜单，如关于（about）、分类（categories）、标签（tags）等，默认处于注释状态，将需要取消的菜单注释掉，然后生成相应的 page 即可。
+
+1. 打开主题的`_config.yml` 文件，找到 `menu` 相关的设置，取消掉需要的菜单项的注释。
+
+   ```yml
+   # Usage: `Key: /link/ || icon`
+   # Key is the name of menu item. If the translation for this item is available, the translated text will be loaded, otherwise the Key name will be used. Key is case-sensitive.
+   # Value before `||` delimiter is the target link, value after `||` delimiter is the name of Font Awesome icon.
+   # External url should start with http:// or https://
+   menu:
+     home: / || fa fa-home
+     about: /about/ || fa fa-user
+     tags: /tags/ || fa fa-tags
+     categories: /categories/ || fa fa-th
+     archives: /archives/ || fa fa-archive
+     #schedule: /schedule/ || fa fa-calendar
+     #sitemap: /sitemap.xml || fa fa-sitemap
+     #commonweal: /404/ || fa fa-heartbeat
+   ```
+
+2. 重新生成部署后，可以看到新增的菜单项，但是单击，跳转页面后会报如下错误
+
+   ```
+   Cannot GET /about/
+   Cannot GET /tags/
+   Cannot GET /categories/
+   ```
+
+3. 这是因为还需要运行如下命令新建相关 page
+
+   ```
+   hexo new page "about"
+   hexo new page "tags"
+   hexo new page "categories"
+   ```
+
+4. 新建 page 后，会在 source 目录下新建 `about`、`tags`、`categories`文件夹，每个文件夹下还会创建一个`index.md`文件表示关于、标签页分类页面，编辑这三个MarkDown文件可以自定义这三个页面的内容.
+
+   并且需要在tags和categories文件对应的index.md的[`Front-matter`](https://hexo.io/zh-cn/docs/front-matter)中增加对应的type选项
+
+   ```markdown
+   type: "tags"
+   ```
+
+   ```markdown
+   type: "categories"
+   ```
+
+# 跳转到站内文章
+
+**如果有空格，需要把空格换成连字符 `-`**
+
+跳转到站内文章的指定锚点：
+
+```
+<a href="{% post_path 文章文件名（不要后缀） %}#章节名">显示的文字</a>
+```
+
+<a href="{% post_path hello-world %}#Deploy-to-remote-sites">hello-world</a>
+
+> 目前暂时没有比较好的方法实现本地跳转并同时支持博客网页跳转的方式。
+>
+> md文件的本地跳转格式是：
+>
+> ```markdown
+> [hello-world](./hello-world.md#Deploy to remote sites)
+> ```
+>
+> 而博客网页之间的跳转格式是：
+>
+> ```markdown
+> <a href="{% post_path hello-world %}#Deploy-to-remote-sites">hello-world</a>
+> ```
 
