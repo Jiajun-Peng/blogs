@@ -91,19 +91,11 @@ INFO  Hexo is running at http://localhost:4000/ . Press Ctrl+C to stop.
 
 访问可以看到一篇名为Hello World的默认文章:
 
-![image-20240212121359193](./使用Hexo搭建博客/image-20240212121359193.png)
-
 > 文章保存在目录下的`\source\_posts`目录中
 >
 > ![image-20240212121603283](./使用Hexo搭建博客/image-20240212121603283.png)
 
 # 编写新文章
-
-文章保存在博客根目录下的`\source\_posts`目录下
-
-![image-20240211155643867](./使用Hexo搭建博客/image-20240211155643867.png)
-
-
 
 文章中可能需要添加图片,那么还需要额外配置
 
